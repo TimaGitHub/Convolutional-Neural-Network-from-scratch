@@ -14,13 +14,7 @@ class FullConnectedNeuralNetwork():
         changes_w = []
         changes_b = []
         art = loss.copy()
-        
-        # if self.optimizer == 'accelerated_momentum':
-        #
-        #     for i in range(len(changes_w)):
-        #         self.weights[-2 - i] = self.weights[-2 - i] + self.last_grad_w[i] * self.momentum
-        #         self.biases[-1 - i] = self.biases[-1 - i] + self.last_grad_b[i] * self.momentum
-                
+
                 
         for i in range(len(self.neurons) + 1):
             if i == 0:
@@ -45,7 +39,7 @@ class FullConnectedNeuralNetwork():
             return self.back_loss
 
         except NaNException:
-            print("Training process failed, please decrease alpha parameter!")
+            print("Training process failed, please decrease alpha parameter or number of neurons!")
             raise NaNException
 
 
@@ -61,55 +55,14 @@ class FullConnectedNeuralNetwork():
                 optimizer=False):
 
         np.random.seed(seed)
-        if activation_func == 'sigmoid':
-            self.activation_func = functions.sigmoid
-            self.derivative = functions.derivative_sigmoid
+        self.activation_func, self.derivative = functions.get_func(activation_func)
 
-        elif activation_func == 'relu':
-            self.activation_func = functions.relu
-            self.derivative = functions.derivative_relu
-
-        elif activation_func == 'leaky_relu':
-            self.activation_func = functions.leaky_relu
-            self.derivative = functions.derivative_leaky_relu
-
-        elif activation_func == 'tanh':
-            self.activation_func = functions.tanh
-            self.derivative = functions.derivative_tanh
-
-        else:
-            raise Exception("Activation function error")
-
-        if loss_function == 'cross_entropy_loss':
-            self.loss_func = functions.cross_entropy_loss
-            self.loss_derivative = functions.cross_entropy_loss_derivative
-        else:
-            raise Exception("Loss function error")
+        self.loss_func, self.loss_derivative = functions.get_loss_func(loss_function)
 
         if gradient_method == 'gd':
             self.gradient_method = self.gradient_descent
         else:
             raise Exception("gradient method error")
-
-        if optimizer == 'momentum':
-            self.optimizer = momentum
-
-        elif optimizer == 'accelerated_momentum':
-            self.optimizer = accelerated_momentum
-
-        elif optimizer == False:
-            self.optimizer = None
-
-        else:
-            raise Exception("Optimizer error")
-
-    def cosmetic(self, progress_bar=False, loss_display=False, iterations=0):
-
-        self.progress_bar = progress_bar
-
-        self.loss_display = loss_display
-
-        self.iterations = iterations
 
     def forward(self, data):
 

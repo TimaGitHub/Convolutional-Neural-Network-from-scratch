@@ -5,18 +5,28 @@ import fullconnected
 import convolutional
 import pooling
 import metrics
-
+import matplotlib.pyplot as plt
+from IPython.display import clear_output
+import matplotlib
+matplotlib.use("TkAgg")
 
 class ConvolutionalNeuralNetwork():
 
+    #  example
+    #  layers = [
+    #  ('conv', [input dimension, filter size, filter size, number of filters], 'relu'),
+
+    #  note:
+    #  for the first convolutional layer input_dimension = 1, because image format is grayscale (x and y, z = 1 (default))
+    #  for the next layers: input dimension = number of filters
+
+    #  ('conv', [input dimension, filter size, filter size, number of filters], 'relu'),
+    #  ('pool', [window size, window size, 'max' or 'min']),
+    #  ('flatten', []),
+    #  ('full_conn', [input number of images (based on previous layers) , [number of neurons, number of neurons, ......], output , 'classification', True, 'gd', 'leaky_relu'])
+    #  ]
     def __init__(self, layers):
         self.prep = []
-        # layers = [('conv', [1, 5, 5, 3], 'relu'),
-        #  ('conv', [3, 5, 5, 5], 'relu'),
-        #  ('conv', [5, 5, 5, 6], 'relu'),
-        #  ('flatten', []),
-        #  ('full_conn', [1536, [20, 20], 10, 'classification', True, 'gd', 'leaky_relu'])
-        #  ])
         for i in range(len(layers)):
             if layers[i][0] == 'conv':
                 self.prep.append(
@@ -37,7 +47,9 @@ class ConvolutionalNeuralNetwork():
 
     def train(self, train_batches, test_batches, alpha, n_epochs):
 
-        for epoch in range(n_epochs):
+        self.history_scores = []
+
+        for epoch in self.tqdm(range(n_epochs), position=0, leave=True):
 
             for index, batch in enumerate(train_batches):
 
@@ -57,7 +69,7 @@ class ConvolutionalNeuralNetwork():
                 for i in range(len(self.prep)):
                     loss = self.prep[-1 - i].gradient_descent_step(loss, self.alpha)
 
-                if index % 20 == 0:
+                if self.loss_display and index % self.iterations == 0:
                     val_acc = []
                     for batch in test_batches:
                         result, temp = batch
@@ -71,6 +83,28 @@ class ConvolutionalNeuralNetwork():
                     print('For epoch number: {}, validation accuracy is: {}'.format(epoch, round(
                             np.mean(val_acc), 4)))
 
+                    self.history_scores.append(np.mean(val_acc))
+
+        if self.loss_graphic:
+
+            fig, ax1 = plt.subplots(figsize=(9, 8))
+
+            clear_output(True)
+
+            ax1.set_xlabel('iters')
+
+            ax1.set_ylabel('accuracy', color='blue')
+
+            t = np.arange(len(self.history_scores))
+
+            ax1.plot(t, self.history_scores)
+
+            plt.locator_params(axis='y', nbins=40)
+
+            fig.tight_layout()
+
+            plt.show()
+
     def forward(self, data_image):
         result = data_image
 
@@ -79,3 +113,21 @@ class ConvolutionalNeuralNetwork():
 
         answer = functions.softmax(result)
         return answer
+
+    def cosmetic(self, progress_bar=False, loss_display=False, loss_graphic = False, iterations=0):
+        # printing this "For epoch number: ..., validation accuracy is: ..., loss is ..."
+        self.loss_display = loss_display
+
+        # to depict the learning process.
+        self.loss_graphic = loss_graphic
+
+        # how often you would like to get message about training process
+        self.iterations = iterations
+
+        if not progress_bar:
+            def tqdm_False(x, **params__):
+                return x
+
+            self.tqdm = tqdm_False
+        else:
+            self.tqdm = tqdm

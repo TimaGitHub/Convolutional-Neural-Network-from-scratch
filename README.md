@@ -52,6 +52,7 @@ On digit image dataset CNN perfoms well ( *about 90 accuracy* ), but such archit
 - [ ] make it faster
 - [ ] make class more pytorch-like
 - [ ] add the ability to save and load model parameters
+- [ ] add Batch Normalization
 
 
 ## References

@@ -28,4 +28,4 @@ if __name__ == '__main__':
                                        ])
     test.cosmetic(progress_bar=False, loss_display=True, loss_graphic = False, iterations= 20)
 
-    test.train(train_batches, test_batches, 0.05, 1)
+    test.train(train_batches, test_batches, 0.05, 3)

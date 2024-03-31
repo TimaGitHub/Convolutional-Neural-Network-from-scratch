@@ -61,7 +61,7 @@ On digit image dataset CNN perfoms well ( *about 90 accuracy* ), but such archit
   
 - 3Blue1Brown [video](https://youtu.be/KuXjwB4LzSA?si=KJHdPrJK_1tBuZl_) about convolution 
 
-- cool [playlist](https://youtube.com/playlist?list=PL1sQgSTcAaT7MbcLWacjsqoOQvqzMdUWg&si=gCke_NmYGIwUbJ9X) about to understand the whole process
+- cool [playlist](https://youtube.com/playlist?list=PL1sQgSTcAaT7MbcLWacjsqoOQvqzMdUWg&si=gCke_NmYGIwUbJ9X) to understand the whole process
 
 - very important [playlist](https://youtube.com/playlist?list=PLuhqtP7jdD8CD6rOWy20INGM44kULvrHu&si=XDupIIUFmAu2olXnabout) about propagation in CNN
 

@@ -49,7 +49,7 @@ On digit image dataset CNN perfoms well ( *about 90 accuracy* ), but such archit
 ## To-Do List
 - [X] add regularization (look for new project - PyCandle)
 - [X] make it more robust for large number of layers and neurons (look for new project - PyCandle)
-- [ ] make it faster
+- [X] make it faster (cupy, numba.njit)
 - [X] make class more pytorch-like (look for new project - PyCandle)
 - [ ] add the ability to save and load model parameters
 - [X] add Batch Normalization (look for new project - PyCandle)
